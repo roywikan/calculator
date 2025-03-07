@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Transfer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { margin-bottom: 10px; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Kalkulator Transfer</h2>
+    <label>Jumlah USD: <input type="number" id="amount" value="100" oninput="calculate()"></label>
+    <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="15000" oninput="calculate()"></label>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Metode</th>
+                <th>Biaya (USD)</th>
+                <th>Diterima (USD)</th>
+                <th>Diterima (IDR)</th>
+                <th>Rumus Perhitungan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Wire Transfer</td>
+                <td id="wireFee"></td>
+                <td id="wireReceived"></td>
+                <td id="wireIDR"></td>
+                <td id="wireFormula"></td>
+            </tr>
+            <tr>
+                <td>MoneyGram</td>
+                <td id="moneygramFee"></td>
+                <td id="moneygramReceived"></td>
+                <td id="moneygramIDR"></td>
+                <td id="moneygramFormula"></td>
+            </tr>
+            <tr>
+                <td>Hyperwallet → PayPal</td>
+                <td id="paypalFee"></td>
+                <td id="paypalReceived"></td>
+                <td id="paypalIDR"></td>
+                <td id="paypalFormula"></td>
+            </tr>
+            <tr>
+                <td>Langsung dari PayPal</td>
+                <td id="paypalDirectFee"></td>
+                <td id="paypalDirectReceived"></td>
+                <td id="paypalDirectIDR"></td>
+                <td id="paypalDirectFormula"></td>
+            </tr>
+            <tr>
+                <td>Payoneer</td>
+                <td id="payoneerFee"></td>
+                <td id="payoneerReceived"></td>
+                <td id="payoneerIDR"></td>
+                <td id="payoneerFormula"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function calculate() {
+            let amount = parseFloat(document.getElementById("amount").value) || 100;
+            let exchangeRate = parseFloat(document.getElementById("exchangeRate").value) || 15000;
+
+            // Wire Transfer (2% fee, min $10, max $30)
+            let wireFee = Math.max(10, Math.min(amount * 0.02, 30));
+            let wireReceived = amount - wireFee;
+            let wireFormula = `max(10, min(${amount} * 0.02, 30))`;
+
+            // MoneyGram ($8 flat fee)
+            let moneygramFee = 8;
+            let moneygramReceived = amount - moneygramFee;
+            let moneygramFormula = `${amount} - 8`;
+
+            // PayPal (Hyperwallet $1 fee + PayPal 3.9% + $0.30)
+            let paypalInterim = amount - 1; // After Hyperwallet fee
+            let paypalFee = (paypalInterim * 0.039) + 0.30;
+            let paypalReceived = paypalInterim - paypalFee;
+            let paypalFormula = `(${amount} - 1) * 0.039 + 0.30`;
+
+            // Direct PayPal transfer (3.9% + $0.30)
+            let paypalDirectFee = (amount * 0.039) + 0.30;
+            let paypalDirectReceived = amount - paypalDirectFee;
+            let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
+            
+            // Payoneer ($3 fixed fee + 1%)
+            let payoneerFee = 3 + (amount * 0.01);
+            let payoneerReceived = amount - payoneerFee;
+            let payoneerFormula = `3 + (${amount} * 0.01)`;
+
+            // Update table values
+            document.getElementById("wireFee").textContent = wireFee.toFixed(2);
+            document.getElementById("wireReceived").textContent = wireReceived.toFixed(2);
+            document.getElementById("wireIDR").textContent = (wireReceived * exchangeRate).toLocaleString();
+            document.getElementById("wireFormula").textContent = wireFormula;
+
+            document.getElementById("moneygramFee").textContent = moneygramFee.toFixed(2);
+            document.getElementById("moneygramReceived").textContent = moneygramReceived.toFixed(2);
+            document.getElementById("moneygramIDR").textContent = (moneygramReceived * exchangeRate).toLocaleString();
+            document.getElementById("moneygramFormula").textContent = moneygramFormula;
+
+            document.getElementById("paypalFee").textContent = paypalFee.toFixed(2);
+            document.getElementById("paypalReceived").textContent = paypalReceived.toFixed(2);
+            document.getElementById("paypalIDR").textContent = (paypalReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalFormula").textContent = paypalFormula;
+
+            document.getElementById("paypalDirectFee").textContent = paypalDirectFee.toFixed(2);
+            document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
+            document.getElementById("paypalDirectIDR").textContent = (paypalDirectReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
+            
+            document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
+            document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
+            document.getElementById("payoneerIDR").textContent = (payoneerReceived * exchangeRate).toLocaleString();
+            document.getElementById("payoneerFormula").textContent = payoneerFormula;
+        }
+
+        // Hitung pertama kali saat halaman dimuat
+        calculate();
+    </script>
+</body>
+</html>
