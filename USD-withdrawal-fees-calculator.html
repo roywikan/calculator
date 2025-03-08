@@ -179,13 +179,10 @@
             const menu = document.querySelector('.menu');
             menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
         }
-
+        
         function calculate() {
             let amount = parseFloat(document.getElementById("amount").value) || 100;
             let exchangeRate = parseFloat(document.getElementById("exchangeRate").value) || 15000;
-
-            // Kurs PayPal yang lebih rendah 3.36%
-            let paypalExchangeRate = exchangeRate * (1 - 0.0336);
 
             // Wire Transfer (2% fee, min $10, max $30)
             let wireFee = Math.max(10, Math.min(amount * 0.02, 30));
@@ -197,25 +194,47 @@
             let moneygramReceived = amount - moneygramFee;
             let moneygramFormula = `${amount} - 8`;
 
-            // Hyperwallet → PayPal (no fee)
+            // PayPal (Hyperwallet $0 fee)
+            let paypalInterim = amount; // After Hyperwallet fee
             let paypalFee = 0;
-            let paypalReceived = amount;
-            let paypalFormula = `Tidak ada biaya`;
+            let paypalReceived = paypalInterim - paypalFee;
+            let paypalFormula = `(USD ${amount})`;
 
             // Direct PayPal transfer (3.9% + $0.30)
             let paypalDirectFee = (amount * 0.039) + 0.30;
             let paypalDirectReceived = amount - paypalDirectFee;
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
 
+            // Direct PayPal transfer dengan Prediksi Kurs lebih rendah 3.36% daripada input exchange Rate, dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
+                        // Kurs PayPal yang lebih rendah 3.36%
+            let paypalExchangeRate = exchangeRate * (1 - 0.0336);
+
+            
+            //let paypalDirect2FeeInIDR = ((amount * (exchangeRate * 0.0336)) + 16000); // Fee dalam IDR
+            //let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
+
+            
+            //let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
+            //let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
+            
+            //let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - ((${amount} x (${exchangeRate} x 0.0336)) + Rp. 16.000,-)`;
+
             // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
             let totalIDR = amount * paypalExchangeRate;
             let feeIDR = totalIDR < 1500000 ? 16000 : 0;
+            
             let paypalDirect2FeeInIDR = (amount * (exchangeRate * 0.0336)) + feeIDR; // Fee dalam IDR
-            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / paypalExchangeRate; // Konversi fee dari IDR ke USD
-            let paypalDirect2ReceivedInIDR = (amount * paypalExchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
-            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / paypalExchangeRate; // Konversi hasil dari IDR ke USD
-            let paypalDirect2Formula = `${amount} * ${payxchangeRate} - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
+            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
+            
+            let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
+            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
+            
+            let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
 
+
+            
+            
+            
             // Payoneer ($3 fixed fee + 1%)
             let payoneerFee = 3 + (amount * 0.01);
             let payoneerReceived = amount - payoneerFee;
@@ -229,28 +248,35 @@
 
             document.getElementById("moneygramFee").textContent = moneygramFee.toFixed(2);
             document.getElementById("moneygramReceived").textContent = moneygramReceived.toFixed(2);
-            document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
+document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
             document.getElementById("moneygramFormula").textContent = moneygramFormula;
 
             document.getElementById("paypalFee").textContent = paypalFee.toFixed(2);
             document.getElementById("paypalReceived").textContent = paypalReceived.toFixed(2);
-            document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
+document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalFormula").textContent = paypalFormula;
 
             document.getElementById("paypalDirectFee").textContent = paypalDirectFee.toFixed(2);
             document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
-            document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
+document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
 
             document.getElementById("paypalDirect2Fee").textContent = paypalDirect2FeeInUSD.toFixed(2);
             document.getElementById("paypalDirect2Received").textContent = paypalDirect2ReceivedInUSD.toFixed(2);
-            document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
+            //document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInIDR.toLocaleString();
+document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
             document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
-
+            
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
             document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
-            document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
+document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
             document.getElementById("payoneerFormula").textContent = payoneerFormula;
+
+
+
+
+
+            
         }
 
         // Hitung pertama kali saat halaman dimuat
