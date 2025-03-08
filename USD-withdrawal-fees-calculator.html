@@ -77,15 +77,50 @@
         th {
             background-color: #f2f2f2;
         }
-        @media (min-width: 600px) {
+        @media (max-width: 600px) {
             .menu {
                 display: flex;
                 position: static;
-                flex-direction: row;
+                flex-direction: column;
                 width: auto;
             }
             .hamburger {
                 display: none;
+            }
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 10px;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+            }
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+            td:last-child {
+                padding-left: 10px;
+                text-align: left;
             }
         }
     </style>
@@ -98,7 +133,7 @@
             <div></div>
         </div>
         <nav class="menu">
-            <a href="/">Home</a>
+            <a href="/home">Home</a>
         </nav>
     </header>
     <div class="hero">
@@ -118,46 +153,46 @@
         </thead>
         <tbody>
             <tr>
-                <td>Wire Transfer</td>
-                <td id="wireFee"></td>
-                <td id="wireReceived"></td>
-                <td id="wireIDR"></td>
-                <td id="wireFormula"></td>
+                <td data-label="Metode">Wire Transfer</td>
+                <td data-label="Biaya (USD)" id="wireFee"></td>
+                <td data-label="Diterima (USD)" id="wireReceived"></td>
+                <td data-label="Diterima (IDR)" id="wireIDR"></td>
+                <td data-label="Rumus Perhitungan" id="wireFormula"></td>
             </tr>
             <tr>
-                <td>MoneyGram</td>
-                <td id="moneygramFee"></td>
-                <td id="moneygramReceived"></td>
-                <td id="moneygramIDR"></td>
-                <td id="moneygramFormula"></td>
+                <td data-label="Metode">MoneyGram</td>
+                <td data-label="Biaya (USD)" id="moneygramFee"></td>
+                <td data-label="Diterima (USD)" id="moneygramReceived"></td>
+                <td data-label="Diterima (IDR)" id="moneygramIDR"></td>
+                <td data-label="Rumus Perhitungan" id="moneygramFormula"></td>
             </tr>
             <tr>
-                <td>Hyperwallet → PayPal</td>
-                <td id="paypalFee"></td>
-                <td id="paypalReceived"></td>
-                <td id="paypalIDR"></td>
-                <td id="paypalFormula"></td>
+                <td data-label="Metode">Hyperwallet → PayPal</td>
+                <td data-label="Biaya (USD)" id="paypalFee"></td>
+                <td data-label="Diterima (USD)" id="paypalReceived"></td>
+                <td data-label="Diterima (IDR)" id="paypalIDR"></td>
+                <td data-label="Rumus Perhitungan" id="paypalFormula"></td>
             </tr>
             <tr>
-                <td>Langsung dari PayPal</td>
-                <td id="paypalDirectFee"></td>
-                <td id="paypalDirectReceived"></td>
-                <td id="paypalDirectIDR"></td>
-                <td id="paypalDirectFormula"></td>
+                <td data-label="Metode">Langsung dari PayPal</td>
+                <td data-label="Biaya (USD)" id="paypalDirectFee"></td>
+                <td data-label="Diterima (USD)" id="paypalDirectReceived"></td>
+                <td data-label="Diterima (IDR)" id="paypalDirectIDR"></td>
+                <td data-label="Rumus Perhitungan" id="paypalDirectFormula"></td>
             </tr>
             <tr>
-                <td>Payoneer</td>
-                <td id="payoneerFee"></td>
-                <td id="payoneerReceived"></td>
-                <td id="payoneerIDR"></td>
-                <td id="payoneerFormula"></td>
+                <td data-label="Metode">Payoneer</td>
+                <td data-label="Biaya (USD)" id="payoneerFee"></td>
+                <td data-label="Diterima (USD)" id="payoneerReceived"></td>
+                <td data-label="Diterima (IDR)" id="payoneerIDR"></td>
+                <td data-label="Rumus Perhitungan" id="payoneerFormula"></td>
             </tr>
             <tr>
-                <td>Langsung dari PayPal dengan Prediksi Kurs</td>
-                <td id="paypalDirect2Fee"></td>
-                <td id="paypalDirect2Received"></td>
-                <td id="paypalDirect2IDR"></td>
-                <td id="paypalDirect2Formula"></td>
+                <td data-label="Metode">Langsung dari PayPal dengan Prediksi Kurs</td>
+                <td data-label="Biaya (USD)" id="paypalDirect2Fee"></td>
+                <td data-label="Diterima (USD)" id="paypalDirect2Received"></td>
+                <td data-label="Diterima (IDR)" id="paypalDirect2IDR"></td>
+                <td data-label="Rumus Perhitungan" id="paypalDirect2Formula"></td>
             </tr>
         </tbody>
     </table>
