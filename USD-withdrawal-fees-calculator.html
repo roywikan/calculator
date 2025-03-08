@@ -113,7 +113,7 @@
 
             // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
             let paypalDirect2Fee = (amount * 0.0336) + 16000;
-            let paypalDirect2Received = amount - paypalDirectFee;
+            let paypalDirect2Received = amount - paypalDirect2Fee;
             let paypalDirect2Formula = `${amount} * 0.0339 + Rp. 16.000,-`;
             
             
