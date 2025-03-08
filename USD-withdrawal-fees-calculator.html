@@ -111,10 +111,10 @@
             let paypalDirectReceived = amount - paypalDirectFee;
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
 
-            // Direct PayPal transfer dengan Prediksi Kurs lebih rendah 3.36% dari input exchange Rate, dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
-            let paypalDirect2Fee = (amount * (exchangeRate * (1-0.0336))) + 16000;
-            let paypalDirect2Received = amount - paypalDirect2Fee;
-            let paypalDirect2Formula = `(${amount} x (${exchangeRate} x (1-0.0336))) + Rp. 16.000,-`;
+            // Direct PayPal transfer dengan Prediksi Kurs lebih rendah 3.36% daripada input exchange Rate, dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
+            let paypalDirect2Fee = ((amount * (exchangeRate * 0.0336)) + 16000);
+            let paypalDirect2Received = (amount * exchangeRate) - paypalDirect2Fee;
+            let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - ((${amount} x (${exchangeRate} x 0.0336)) + Rp. 16.000,-)`;
 
             
             
