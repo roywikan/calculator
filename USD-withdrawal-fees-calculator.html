@@ -1,198 +1,236 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Transfer</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-        }
-        .menu {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            background-color: #333;
-            position: absolute;
-            top: 50px;
-            width: 100%;
-        }
-        .menu a {
-            color: #fff;
-            padding: 10px;
-            text-decoration: none;
-            width: 100%;
-            text-align: center;
-        }
-        .menu a:hover {
-            background-color: #444;
-        }
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        .hamburger div {
-            width: 25px;
-            height: 3px;
-            background-color: #fff;
-            margin: 4px 0;
-        }
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 50vh;
-            background-color: #f2f2f2;
-            padding: 20px;
-        }
-        .hero input {
-            margin: 10px 0;
-            padding: 10px;
-            width: 80%;
-            max-width: 300px;
-        }
-        h2 {
-            text-align: center;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        @media (max-width: 600px) {
-            .menu {
-                display: flex;
-                position: static;
-                flex-direction: column;
-                width: auto;
-            }
-            .hamburger {
-                display: none;
-            }
-            thead {
-                display: none;
-            }
-            tbody, tr, td {
-                display: block;
-                width: 100%;
-            }
-            tr {
-                margin-bottom: 10px;
-            }
-            td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-            }
-            td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 15px;
-                font-weight: bold;
-                text-align: left;
-            }
-            td:last-child {
-                text-align: left;
-                padding-left: 15px;
-                padding-top: 10px;
-                border-top: 2px solid #ddd;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Transfer</title>
+  <style>
+    :root {
+      --primary-color: #333;
+      --secondary-color: #444;
+      --bg-color: #f9f9f9;
+      --accent-color: #007BFF;
+      --font-family: 'Arial', sans-serif;
+    }
+    /* Global Styles */
+    body {
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: var(--primary-color);
+      color: #fff;
+      position: relative;
+    }
+    /* Navigation Menu */
+    .menu {
+      display: none;
+      flex-direction: column;
+      background-color: var(--primary-color);
+      width: 100%;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+    }
+    .menu a {
+      color: #fff;
+      padding: 12px;
+      text-decoration: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .menu a:hover {
+      background-color: var(--secondary-color);
+    }
+    .hamburger {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+    }
+    /* Hero Section */
+    .hero {
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 15px;
+      border-radius: 8px;
+    }
+    .hero label {
+      display: block;
+      margin: 10px 0;
+    }
+    .hero input {
+      padding: 10px;
+      width: 90%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    h2 {
+      text-align: center;
+      margin: 20px 10px;
+      color: var(--primary-color);
+    }
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #eee;
+    }
+    /* Mobile Responsive Table */
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 15px;
+        border-bottom: 2px solid #ddd;
+      }
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 40%;
+        text-align: left;
+        font-weight: bold;
+      }
+    }
+    /* Desktop View Enhancements */
+    @media (min-width: 601px) {
+      .menu {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+      }
+      .hamburger {
+        display: none;
+      }
+      header {
+        padding: 15px 40px;
+      }
+      .hero {
+        margin: 30px auto;
+        max-width: 800px;
+      }
+      table {
+        margin: 20px auto;
+        max-width: 1000px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="hamburger" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <nav class="menu">
-            <a href="/home">Home</a>
-        </nav>
-    </header>
-    <div class="hero">
-        <label>Jumlah USD: <input type="number" id="amount" value="85.57" oninput="calculate()"></label>
-        <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="16310" oninput="calculate()"></label>
+  <header>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
-    <h2>Kalkulator Transfer Dari Paypal Ke Bank di Indonesia</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Metode</th>
-                <th>Biaya (USD)</th>
-                <th>Diterima (USD)</th>
-                <th>Diterima (IDR)</th>
-                <th>Rumus Perhitungan</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td data-label="Metode">Wire Transfer</td>
-                <td data-label="Biaya (USD)" id="wireFee"></td>
-                <td data-label="Diterima (USD)" id="wireReceived"></td>
-                <td data-label="Diterima (IDR)" id="wireIDR"></td>
-                <td data-label="Rumus Perhitungan" id="wireFormula"></td>
-            </tr>
-            <tr>
-                <td data-label="Metode">MoneyGram</td>
-                <td data-label="Biaya (USD)" id="moneygramFee"></td>
-                <td data-label="Diterima (USD)" id="moneygramReceived"></td>
-                <td data-label="Diterima (IDR)" id="moneygramIDR"></td>
-                <td data-label="Rumus Perhitungan" id="moneygramFormula"></td>
-            </tr>
-            <tr>
-                <td data-label="Metode">Hyperwallet → PayPal</td>
-                <td data-label="Biaya (USD)" id="paypalFee"></td>
-                <td data-label="Diterima (USD)" id="paypalReceived"></td>
-                <td data-label="Diterima (IDR)" id="paypalIDR"></td>
-                <td data-label="Rumus Perhitungan" id="paypalFormula"></td>
-            </tr>
-            <tr>
-                <td data-label="Metode">Langsung dari PayPal</td>
-                <td data-label="Biaya (USD)" id="paypalDirectFee"></td>
-                <td data-label="Diterima (USD)" id="paypalDirectReceived"></td>
-                <td data-label="Diterima (IDR)" id="paypalDirectIDR"></td>
-                <td data-label="Rumus Perhitungan" id="paypalDirectFormula"></td>
-            </tr>
-            <tr>
-                <td data-label="Metode">Payoneer</td>
-                <td data-label="Biaya (USD)" id="payoneerFee"></td>
-                <td data-label="Diterima (USD)" id="payoneerReceived"></td>
-                <td data-label="Diterima (IDR)" id="payoneerIDR"></td>
-                <td data-label="Rumus Perhitungan" id="payoneerFormula"></td>
-            </tr>
-            <tr>
-                <td data-label="Metode">Langsung dari PayPal dengan Prediksi Kurs</td>
-                <td data-label="Biaya (USD)" id="paypalDirect2Fee"></td>
-                <td data-label="Diterima (USD)" id="paypalDirect2Received"></td>
-                <td data-label="Diterima (IDR)" id="paypalDirect2IDR"></td>
-                <td data-label="Rumus Perhitungan" id="paypalDirect2Formula"></td>
-            </tr>
-        </tbody>
-    </table>
+    <nav class="menu">
+      <a href="/home">Home</a>
+      <!-- Tambahkan link lain jika diperlukan -->
+    </nav>
+  </header>
+  <div class="hero">
+    <label>Jumlah USD:
+      <input type="number" id="amount" value="85.57" oninput="calculate()">
+    </label>
+    <label>Kurs IDR/USD:
+      <input type="number" id="exchangeRate" value="16310" oninput="calculate()">
+    </label>
+  </div>
+  <h2>Kalkulator Transfer Dari Paypal Ke Bank di Indonesia</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metode</th>
+        <th>Biaya (USD)</th>
+        <th>Diterima (USD)</th>
+        <th>Diterima (IDR)</th>
+        <th>Rumus Perhitungan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Metode">Wire Transfer</td>
+        <td data-label="Biaya (USD)" id="wireFee"></td>
+        <td data-label="Diterima (USD)" id="wireReceived"></td>
+        <td data-label="Diterima (IDR)" id="wireIDR"></td>
+        <td data-label="Rumus Perhitungan" id="wireFormula"></td>
+      </tr>
+      <tr>
+        <td data-label="Metode">MoneyGram</td>
+        <td data-label="Biaya (USD)" id="moneygramFee"></td>
+        <td data-label="Diterima (USD)" id="moneygramReceived"></td>
+        <td data-label="Diterima (IDR)" id="moneygramIDR"></td>
+        <td data-label="Rumus Perhitungan" id="moneygramFormula"></td>
+      </tr>
+      <tr>
+        <td data-label="Metode">Hyperwallet → PayPal</td>
+        <td data-label="Biaya (USD)" id="paypalFee"></td>
+        <td data-label="Diterima (USD)" id="paypalReceived"></td>
+        <td data-label="Diterima (IDR)" id="paypalIDR"></td>
+        <td data-label="Rumus Perhitungan" id="paypalFormula"></td>
+      </tr>
+      <tr>
+        <td data-label="Metode">Langsung dari PayPal</td>
+        <td data-label="Biaya (USD)" id="paypalDirectFee"></td>
+        <td data-label="Diterima (USD)" id="paypalDirectReceived"></td>
+        <td data-label="Diterima (IDR)" id="paypalDirectIDR"></td>
+        <td data-label="Rumus Perhitungan" id="paypalDirectFormula"></td>
+      </tr>
+      <tr>
+        <td data-label="Metode">Payoneer</td>
+        <td data-label="Biaya (USD)" id="payoneerFee"></td>
+        <td data-label="Diterima (USD)" id="payoneerReceived"></td>
+        <td data-label="Diterima (IDR)" id="payoneerIDR"></td>
+        <td data-label="Rumus Perhitungan" id="payoneerFormula"></td>
+      </tr>
+      <tr>
+        <td data-label="Metode">Langsung dari PayPal dengan Prediksi Kurs</td>
+        <td data-label="Biaya (USD)" id="paypalDirect2Fee"></td>
+        <td data-label="Diterima (USD)" id="paypalDirect2Received"></td>
+        <td data-label="Diterima (IDR)" id="paypalDirect2IDR"></td>
+        <td data-label="Rumus Perhitungan" id="paypalDirect2Formula"></td>
+      </tr>
+    </tbody>
+  </table>
 
-    <div>
+    
+  <div style="padding: 0 20px 20px;">
          <p><strong>Penjelasan:</strong></p>
         <p>Setiap metode transfer memiliki biaya dan waktu yang berbeda. Berikut adalah rincian:</p>
         <ul>
