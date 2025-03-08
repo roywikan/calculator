@@ -112,8 +112,15 @@
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
 
             // Direct PayPal transfer dengan Prediksi Kurs lebih rendah 3.36% daripada input exchange Rate, dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
-            let paypalDirect2Fee = ((amount * (exchangeRate * 0.0336)) + 16000);
-            let paypalDirect2Received = (amount * exchangeRate) - paypalDirect2Fee;
+            //let paypalDirect2Fee = ((amount * (exchangeRate * 0.0336)) + 16000);
+            let paypalDirect2FeeInIDR = ((amount * (exchangeRate * 0.0336)) + 16000); // Fee dalam IDR
+            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
+
+            
+            //let paypalDirect2Received = (amount * exchangeRate) - paypalDirect2Fee;
+            let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
+            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
+            
             let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - ((${amount} x (${exchangeRate} x 0.0336)) + Rp. 16.000,-)`;
 
             
@@ -145,9 +152,9 @@
             document.getElementById("paypalDirectIDR").textContent = (paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
 
-            document.getElementById("paypalDirect2Fee").textContent = paypalDirect2Fee.toFixed(2);
-            document.getElementById("paypalDirect2Received").textContent = paypalDirect2Received.toFixed(2);
-            document.getElementById("paypalDirect2IDR").textContent = paypalDirect2Received.toLocaleString();
+            document.getElementById("paypalDirect2Fee").textContent = paypalDirect2FeeInUSD.toFixed(2);
+            document.getElementById("paypalDirect2Received").textContent = paypalDirect2ReceivedInUSD.toFixed(2);
+            document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInUSD.toLocaleString();
             document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
             
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
