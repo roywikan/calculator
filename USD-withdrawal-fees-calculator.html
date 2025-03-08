@@ -100,11 +100,11 @@
             let moneygramReceived = amount - moneygramFee;
             let moneygramFormula = `${amount} - 8`;
 
-            // PayPal (Hyperwallet $1 fee + PayPal 3.9% + $0.30)
-            let paypalInterim = amount - 1; // After Hyperwallet fee
-            let paypalFee = (paypalInterim * 0.039) + 0.30;
+            // PayPal (Hyperwallet $0 fee)
+            let paypalInterim = amount; // After Hyperwallet fee
+            let paypalFee = 0;
             let paypalReceived = paypalInterim - paypalFee;
-            let paypalFormula = `(${amount} - 1) * 0.039 + 0.30`;
+            let paypalFormula = `(USD ${amount})`;
 
             // Direct PayPal transfer (3.9% + $0.30)
             let paypalDirectFee = (amount * 0.039) + 0.30;
