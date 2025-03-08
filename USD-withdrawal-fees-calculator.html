@@ -5,18 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Transfer</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        input { margin-bottom: 10px; padding: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+        }
+        .menu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: #333;
+            position: absolute;
+            top: 50px;
+            width: 100%;
+        }
+        .menu a {
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            width: 100%;
+            text-align: center;
+        }
+        .menu a:hover {
+            background-color: #444;
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 4px 0;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .hero input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            max-width: 300px;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        @media (min-width: 600px) {
+            .menu {
+                display: flex;
+                position: static;
+                flex-direction: row;
+                width: auto;
+            }
+            .hamburger {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav class="menu">
+            <a href="/home">Home</a>
+        </nav>
+    </header>
+    <div class="hero">
+        <label>Jumlah USD: <input type="number" id="amount" value="85.57" oninput="calculate()"></label>
+        <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="16310" oninput="calculate()"></label>
+    </div>
     <h2>Kalkulator Transfer Dari Paypal Ke Bank di Indonesia</h2>
-    <label>Jumlah USD: <input type="number" id="amount" value="85.57" oninput="calculate()"></label>
-    <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="16310" oninput="calculate()"></label>
-    
     <table>
         <thead>
             <tr>
@@ -82,13 +171,21 @@
             <li><strong>Hyperwallet → PayPal:</strong> Gratis. Dana langsung masuk ke akun PayPal dalam waktu 2 menit.</li>
             <li><strong>Langsung dari PayPal:</strong> Biaya 3.9% + $0.30. Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
             <li><strong>Payoneer:</strong> Biaya $3 + 1% dari jumlah transfer. Dana sampai dalam 2-5 hari kerja.</li>
-            <li><strong>Langsung dari PayPal dengan Prediksi Kurs:</strong> Biaya Kurs 3.36%  (ditambah biaya Rp.16.000 satu kali, jika yang ditransfer kurang dari Rp. 1.500.000). Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
+            <li><strong>Langsung dari PayPal dengan Prediksi Kurs:</strong> Biaya Kurs 3.36%  (Rp.16.000 jika yang ditransfer kurang dari Rp. 1.500.000). Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
         </ul>
     </div>
     <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
         function calculate() {
             let amount = parseFloat(document.getElementById("amount").value) || 100;
             let exchangeRate = parseFloat(document.getElementById("exchangeRate").value) || 15000;
+
+            // Kurs PayPal yang lebih rendah 3.36%
+            let paypalExchangeRate = exchangeRate * (1 - 0.0336);
 
             // Wire Transfer (2% fee, min $10, max $30)
             let wireFee = Math.max(10, Math.min(amount * 0.02, 30));
@@ -100,47 +197,25 @@
             let moneygramReceived = amount - moneygramFee;
             let moneygramFormula = `${amount} - 8`;
 
-            // PayPal (Hyperwallet $0 fee)
-            let paypalInterim = amount; // After Hyperwallet fee
+            // Hyperwallet → PayPal (no fee)
             let paypalFee = 0;
-            let paypalReceived = paypalInterim - paypalFee;
-            let paypalFormula = `(USD ${amount})`;
+            let paypalReceived = amount;
+            let paypalFormula = `Tidak ada biaya`;
 
             // Direct PayPal transfer (3.9% + $0.30)
             let paypalDirectFee = (amount * 0.039) + 0.30;
             let paypalDirectReceived = amount - paypalDirectFee;
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
 
-            // Direct PayPal transfer dengan Prediksi Kurs lebih rendah 3.36% daripada input exchange Rate, dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
-                        // Kurs PayPal yang lebih rendah 3.36%
-            let paypalExchangeRate = exchangeRate * (1 - 0.0336);
-
-            
-            //let paypalDirect2FeeInIDR = ((amount * (exchangeRate * 0.0336)) + 16000); // Fee dalam IDR
-            //let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
-
-            
-            //let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
-            //let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
-            
-            //let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - ((${amount} x (${exchangeRate} x 0.0336)) + Rp. 16.000,-)`;
-
             // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
             let totalIDR = amount * paypalExchangeRate;
             let feeIDR = totalIDR < 1500000 ? 16000 : 0;
-            
             let paypalDirect2FeeInIDR = (amount * (exchangeRate * 0.0336)) + feeIDR; // Fee dalam IDR
-            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
-            
-            let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
-            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
-            
-            let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
+            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / paypalExchangeRate; // Konversi fee dari IDR ke USD
+            let paypalDirect2ReceivedInIDR = (amount * paypalExchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
+            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / paypalExchangeRate; // Konversi hasil dari IDR ke USD
+            let paypalDirect2Formula = `${amount} * ${payxchangeRate} - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
 
-
-            
-            
-            
             // Payoneer ($3 fixed fee + 1%)
             let payoneerFee = 3 + (amount * 0.01);
             let payoneerReceived = amount - payoneerFee;
@@ -154,35 +229,28 @@
 
             document.getElementById("moneygramFee").textContent = moneygramFee.toFixed(2);
             document.getElementById("moneygramReceived").textContent = moneygramReceived.toFixed(2);
-document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
+            document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
             document.getElementById("moneygramFormula").textContent = moneygramFormula;
 
             document.getElementById("paypalFee").textContent = paypalFee.toFixed(2);
             document.getElementById("paypalReceived").textContent = paypalReceived.toFixed(2);
-document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalFormula").textContent = paypalFormula;
 
             document.getElementById("paypalDirectFee").textContent = paypalDirectFee.toFixed(2);
             document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
-document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
 
             document.getElementById("paypalDirect2Fee").textContent = paypalDirect2FeeInUSD.toFixed(2);
             document.getElementById("paypalDirect2Received").textContent = paypalDirect2ReceivedInUSD.toFixed(2);
-            //document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInIDR.toLocaleString();
-document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
+            document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
             document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
-            
+
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
             document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
-document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
+            document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
             document.getElementById("payoneerFormula").textContent = payoneerFormula;
-
-
-
-
-
-            
         }
 
         // Hitung pertama kali saat halaman dimuat
