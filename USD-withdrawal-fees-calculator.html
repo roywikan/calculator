@@ -4,244 +4,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkulator Transfer</title>
-  <style>
-    :root {
-      --primary-color: #333;
-      --secondary-color: #444;
-      --bg-color: #f9f9f9;
-      --accent-color: #007BFF;
-      --font-family: 'Arial', sans-serif;
-    }
-    /* Global Styles */
-    body {
-      font-family: var(--font-family);
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-color);
-      color: #333;
-      line-height: 1.6;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background-color: var(--primary-color);
-      color: #fff;
-      position: relative;
-    }
-    /* Navigation Menu */
-    .menu {
-      display: none;
-      flex-direction: column;
-      background-color: var(--primary-color);
-      width: 100%;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1000;
-    }
-    .menu a {
-      color: #fff;
-      padding: 12px;
-      text-decoration: none;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      text-align: center;
-    }
-    .menu a:hover {
-      background-color: var(--secondary-color);
-    }
-    .hamburger {
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: #fff;
-    }
-    /* Hero Section */
-    .hero {
-      padding: 20px;
-      text-align: center;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin: 15px;
-      border-radius: 8px;
-    }
-    .hero label {
-      display: block;
-      margin: 10px 0;
-    }
-    .hero input {
-      padding: 10px;
-      width: 90%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    h2 {
-      text-align: center;
-      margin: 20px 10px;
-      color: var(--primary-color);
-    }
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border: 1px solid #ddd;
-    }
-    th {
-      background-color: #eee;
-    }
-    /* Mobile Responsive Table */
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        margin-bottom: 15px;
-        border-bottom: 2px solid #ddd;
-      }
-      td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-      }
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        width: 40%;
-        text-align: left;
-        font-weight: bold;
-      }
-    }
-    /* Desktop View Enhancements */
-    @media (min-width: 601px) {
-      .menu {
-        display: flex;
-        position: static;
-        flex-direction: row;
-        align-items: center;
-      }
-      .hamburger {
-        display: none;
-      }
-      header {
-        padding: 15px 40px;
-      }
-      .hero {
-        margin: 30px auto;
-        max-width: 800px;
-      }
-      table {
-        margin: 20px auto;
-        max-width: 1000px;
-      }
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header>
-    <div class="hamburger" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header & Navigasi -->
+  <header class="flex justify-between items-center p-4 bg-gray-800 text-white relative">
+    <!-- Hamburger Menu untuk mobile -->
+    <div id="hamburger" class="cursor-pointer md:hidden" onclick="toggleMenu()">
+      <div class="w-6 h-0.5 bg-white mb-1"></div>
+      <div class="w-6 h-0.5 bg-white mb-1"></div>
+      <div class="w-6 h-0.5 bg-white"></div>
     </div>
-    <nav class="menu">
-      <a href="/home">Home</a>
+    <!-- Menu Navigasi -->
+    <nav id="menu" class="hidden md:flex md:space-x-4 absolute md:static left-0 top-full w-full md:w-auto bg-gray-800">
+      <a href="/home" class="block px-4 py-2 hover:bg-gray-700">Home</a>
       <!-- Tambahkan link lain jika diperlukan -->
     </nav>
   </header>
-  <div class="hero">
-    <label>Jumlah USD:
-      <input type="number" id="amount" value="85.57" oninput="calculate()">
-    </label>
-    <label>Kurs IDR/USD:
-      <input type="number" id="exchangeRate" value="16310" oninput="calculate()">
-    </label>
-  </div>
-  <h2>Kalkulator Transfer Dari Hyperwallet/Paypal Ke Bank di Indonesia</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Metode</th>
-        <th>Biaya (USD)</th>
-        <th>Diterima (USD)</th>
-        <th>Diterima (IDR)</th>
-        <th>Rumus Perhitungan</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Metode">Wire Transfer</td>
-        <td data-label="Biaya (USD)" id="wireFee"></td>
-        <td data-label="Diterima (USD)" id="wireReceived"></td>
-        <td data-label="Diterima (IDR)" id="wireIDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="wireFormula"></td>
-      </tr>
-      <tr>
-        <td data-label="Metode">MoneyGram</td>
-        <td data-label="Biaya (USD)" id="moneygramFee"></td>
-        <td data-label="Diterima (USD)" id="moneygramReceived"></td>
-        <td data-label="Diterima (IDR)" id="moneygramIDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="moneygramFormula"></td>
-      </tr>
-      <tr>
-        <td data-label="Metode">Hyperwallet → PayPal</td>
-        <td data-label="Biaya (USD)" id="paypalFee"></td>
-        <td data-label="Diterima (USD)" id="paypalReceived"></td>
-        <td data-label="Diterima (IDR)" id="paypalIDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="paypalFormula"></td>
-      </tr>
-      <tr>
-        <td data-label="Metode">Langsung dari PayPal</td>
-        <td data-label="Biaya (USD)" id="paypalDirectFee"></td>
-        <td data-label="Diterima (USD)" id="paypalDirectReceived"></td>
-        <td data-label="Diterima (IDR)" id="paypalDirectIDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="paypalDirectFormula"></td>
-      </tr>
-      <tr>
-        <td data-label="Metode">Payoneer</td>
-        <td data-label="Biaya (USD)" id="payoneerFee"></td>
-        <td data-label="Diterima (USD)" id="payoneerReceived"></td>
-        <td data-label="Diterima (IDR)" id="payoneerIDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="payoneerFormula"></td>
-      </tr>
-      <tr>
-        <td data-label="Metode">Langsung dari PayPal dengan Prediksi Kurs</td>
-        <td data-label="Biaya (USD)" id="paypalDirect2Fee"></td>
-        <td data-label="Diterima (USD)" id="paypalDirect2Received"></td>
-        <td data-label="Diterima (IDR)" id="paypalDirect2IDR" style="font-weight: bold;"></td>
-        <td data-label="Rumus Perhitungan" id="paypalDirect2Formula"></td>
-      </tr>
-    </tbody>
-  </table>
 
-    
-  <div style="padding: 0 20px 20px;">
-         <p><strong>Penjelasan:</strong></p>
-        <p>Setiap metode transfer memiliki biaya dan waktu yang berbeda. Berikut adalah rincian:</p>
-        <ul>
-            <li><strong>Wire Transfer ke Rekening Bank:</strong> Biaya sekitar $10-$30. Waktu sampai 2-5 hari kerja.</li>
-            <li><strong>MoneyGram:</strong> Biaya tetap $8. Dana sampai dalam 1-2 hari kerja.</li>
-            <li><strong>Hyperwallet → PayPal:</strong> Gratis. Dana langsung masuk ke akun PayPal dalam waktu 2 menit.</li>
-            <li><strong>Langsung dari PayPal:</strong> Biaya 3.9% + $0.30. Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
-            <li><strong>Payoneer:</strong> Biaya $3 + 1% dari jumlah transfer. Dana sampai dalam 2-5 hari kerja.</li>
-            <li><strong>Langsung dari PayPal dengan Prediksi Kurs:</strong> Biaya Kurs 3.36%  (Rp.16.000 jika yang ditransfer kurang dari Rp. 1.500.000). Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
-        </ul>
+  <!-- Hero Section -->
+  <section class="container mx-auto px-4 py-6">
+    <div class="bg-white shadow-md rounded p-6 text-center">
+      <label class="block mb-4">
+        Jumlah USD:
+        <input type="number" id="amount" value="85.57" oninput="calculate()" class="mt-1 block w-full max-w-xs mx-auto p-2 border border-gray-300 rounded">
+      </label>
+      <label class="block">
+        Kurs IDR/USD:
+        <input type="number" id="exchangeRate" value="16310" oninput="calculate()" class="mt-1 block w-full max-w-xs mx-auto p-2 border border-gray-300 rounded">
+      </label>
     </div>
+  </section>
+
+  <!-- Tabel Kalkulator -->
+  <section class="container mx-auto px-4">
+    <h2 class="text-2xl font-semibold text-center my-6">Kalkulator Transfer Dari PayPal ke Bank di Indonesia</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="border p-2 text-center">Metode</th>
+            <th class="border p-2 text-center">Biaya (USD)</th>
+            <th class="border p-2 text-center">Diterima (USD)</th>
+            <th class="border p-2 text-center">Diterima (IDR)</th>
+            <th class="border p-2 text-center">Rumus Perhitungan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">Wire Transfer</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="wireFee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="wireReceived"></td>
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="wireIDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="wireFormula"></td>
+          </tr>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">MoneyGram</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="moneygramFee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="moneygramReceived"></td>
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="moneygramIDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="moneygramFormula"></td>
+          </tr>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">Hyperwallet → PayPal</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="paypalFee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="paypalReceived"></td>
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="paypalIDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="paypalFormula"></td>
+          </tr>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">Langsung dari PayPal</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="paypalDirectFee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="paypalDirectReceived"></td>
+            <!-- Contoh pencetakan bold: menambahkan class font-bold -->
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="paypalDirectIDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="paypalDirectFormula"></td>
+          </tr>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">Payoneer</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="payoneerFee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="payoneerReceived"></td>
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="payoneerIDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="payoneerFormula"></td>
+          </tr>
+          <tr class="odd:bg-white even:bg-gray-100">
+            <td class="border p-2" data-label="Metode">Langsung dari PayPal dengan Prediksi Kurs</td>
+            <td class="border p-2" data-label="Biaya (USD)" id="paypalDirect2Fee"></td>
+            <td class="border p-2" data-label="Diterima (USD)" id="paypalDirect2Received"></td>
+            <td class="border p-2 font-bold" data-label="Diterima (IDR)" id="paypalDirect2IDR"></td>
+            <td class="border p-2" data-label="Rumus Perhitungan" id="paypalDirect2Formula"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Penjelasan -->
+  <section class="container mx-auto px-4 py-6">
+    <div class="bg-white shadow-md rounded p-6">
+      <p class="font-bold mb-2">Penjelasan:</p>
+      <p class="mb-2">Setiap metode transfer memiliki biaya dan waktu yang berbeda. Berikut adalah rincian:</p>
+      <ul class="list-disc list-inside">
+        <li><strong>Wire Transfer ke Rekening Bank:</strong> Biaya sekitar $10-$30. Waktu sampai 2-5 hari kerja.</li>
+        <li><strong>MoneyGram:</strong> Biaya tetap $8. Dana sampai dalam 1-2 hari kerja.</li>
+        <li><strong>Hyperwallet → PayPal:</strong> Gratis. Dana langsung masuk ke akun PayPal dalam waktu 2 menit.</li>
+        <li><strong>Langsung dari PayPal:</strong> Biaya 3.9% + $0.30. Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
+        <li><strong>Payoneer:</strong> Biaya $3 + 1% dari jumlah transfer. Dana sampai dalam 2-5 hari kerja.</li>
+        <li><strong>Langsung dari PayPal dengan Prediksi Kurs:</strong> Biaya Kurs 3.36% (Tambah biaya Rp.16.000 jika yang ditransfer kurang dari Rp.1.500.000). Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
+      </ul>
+    </div>
+  </section>
+  
     <script>
         function toggleMenu() {
             const menu = document.querySelector('.menu');
@@ -316,28 +189,28 @@
 
             document.getElementById("moneygramFee").textContent = moneygramFee.toFixed(2);
             document.getElementById("moneygramReceived").textContent = moneygramReceived.toFixed(2);
-document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
+            document.getElementById("moneygramIDR").textContent = Math.round(moneygramReceived * exchangeRate).toLocaleString();
             document.getElementById("moneygramFormula").textContent = moneygramFormula;
 
             document.getElementById("paypalFee").textContent = paypalFee.toFixed(2);
             document.getElementById("paypalReceived").textContent = paypalReceived.toFixed(2);
-document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalIDR").textContent = Math.round(paypalReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalFormula").textContent = paypalFormula;
 
             document.getElementById("paypalDirectFee").textContent = paypalDirectFee.toFixed(2);
             document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
-document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalDirectIDR").textContent = Math.round(paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
 
             document.getElementById("paypalDirect2Fee").textContent = paypalDirect2FeeInUSD.toFixed(2);
             document.getElementById("paypalDirect2Received").textContent = paypalDirect2ReceivedInUSD.toFixed(2);
             //document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInIDR.toLocaleString();
-document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
+            document.getElementById("paypalDirect2IDR").textContent = Math.round(paypalDirect2ReceivedInIDR).toLocaleString();
             document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
             
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
             document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
-document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
+            document.getElementById("payoneerIDR").textContent = Math.round(payoneerReceived * exchangeRate).toLocaleString();
             document.getElementById("payoneerFormula").textContent = payoneerFormula;
 
 
