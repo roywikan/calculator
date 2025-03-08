@@ -149,32 +149,33 @@
             // Update table values
             document.getElementById("wireFee").textContent = wireFee.toFixed(2);
             document.getElementById("wireReceived").textContent = wireReceived.toFixed(2);
-            document.getElementById("wireIDR").textContent = (wireReceived * exchangeRate).toLocaleString();
+            document.getElementById("wireIDR").textContent = Math.floor(wireReceived * exchangeRate).toLocaleString();
             document.getElementById("wireFormula").textContent = wireFormula;
 
             document.getElementById("moneygramFee").textContent = moneygramFee.toFixed(2);
             document.getElementById("moneygramReceived").textContent = moneygramReceived.toFixed(2);
-            document.getElementById("moneygramIDR").textContent = (moneygramReceived * exchangeRate).toLocaleString();
+            document.getElementById("moneygramIDR").textContent = Math.floor(moneygramReceived * exchangeRate).toLocaleString();
             document.getElementById("moneygramFormula").textContent = moneygramFormula;
 
             document.getElementById("paypalFee").textContent = paypalFee.toFixed(2);
             document.getElementById("paypalReceived").textContent = paypalReceived.toFixed(2);
-            document.getElementById("paypalIDR").textContent = (paypalReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalIDR").textContent = Math.floor(paypalReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalFormula").textContent = paypalFormula;
 
             document.getElementById("paypalDirectFee").textContent = paypalDirectFee.toFixed(2);
             document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
-            document.getElementById("paypalDirectIDR").textContent = (paypalDirectReceived * exchangeRate).toLocaleString();
+            document.getElementById("paypalDirectIDR").textContent = Math.floor(paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
 
             document.getElementById("paypalDirect2Fee").textContent = paypalDirect2FeeInUSD.toFixed(2);
             document.getElementById("paypalDirect2Received").textContent = paypalDirect2ReceivedInUSD.toFixed(2);
-            document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInIDR.toLocaleString();
+            //document.getElementById("paypalDirect2IDR").textContent = paypalDirect2ReceivedInIDR.toLocaleString();
+              document.getElementById("paypalDirect2IDR").textContent = Math.floor(paypalDirect2ReceivedInIDR).toLocaleString();
             document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
             
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
             document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
-            document.getElementById("payoneerIDR").textContent = (payoneerReceived * exchangeRate).toLocaleString();
+            document.getElementById("payoneerIDR").textContent = Math.floor((payoneerReceived * exchangeRate).toLocaleString();
             document.getElementById("payoneerFormula").textContent = payoneerFormula;
         }
 
