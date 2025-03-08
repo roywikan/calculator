@@ -112,9 +112,11 @@
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
 
             // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
-            let paypalDirect2Fee = (amount * 0.0336) + 16000;
+            let paypalDirect2Fee = (amount * (exchangeRate * (1-0.0336))) + 16000;
             let paypalDirect2Received = amount - paypalDirect2Fee;
-            let paypalDirect2Formula = `${amount} * 0.0339 + Rp. 16.000,-`;
+            let paypalDirect2Formula = `(${amount} x (${exchangeRate} x (1-0.0336))) + Rp. 16.000,-`;
+
+            
             
             
             // Payoneer ($3 fixed fee + 1%)
