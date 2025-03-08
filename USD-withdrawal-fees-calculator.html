@@ -14,8 +14,8 @@
 </head>
 <body>
     <h2>Kalkulator Transfer</h2>
-    <label>Jumlah USD: <input type="number" id="amount" value="100" oninput="calculate()"></label>
-    <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="15000" oninput="calculate()"></label>
+    <label>Jumlah USD: <input type="number" id="amount" value="85.57" oninput="calculate()"></label>
+    <label>Kurs IDR/USD: <input type="number" id="exchangeRate" value="16310" oninput="calculate()"></label>
     
     <table>
         <thead>
@@ -128,11 +128,14 @@
             // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
             let totalIDR = amount * paypalExchangeRate;
             let feeIDR = totalIDR < 1500000 ? 16000 : 0;
+            
             let paypalDirect2FeeInIDR = (amount * (exchangeRate * 0.0336)) + feeIDR; // Fee dalam IDR
-            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / paypalExchangeRate; // Konversi fee dari IDR ke USD
-            let paypalDirect2ReceivedInIDR = (amount * paypalExchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
-            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / paypalExchangeRate; // Konversi hasil dari IDR ke USD
-            let paypalDirect2Formula = `${amount} * ${paypalExchangeRate} - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR}) / ${paypalExchangeRate}`;
+            let paypalDirect2FeeInUSD = paypalDirect2FeeInIDR / exchangeRate; // Konversi fee dari IDR ke USD
+            
+            let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
+            let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
+            
+            let paypalDirect2Formula = `(${amount} * ${paypalExchangeRate}) - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
 
 
             
