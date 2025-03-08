@@ -135,7 +135,7 @@
             let paypalDirect2ReceivedInIDR = (amount * exchangeRate) - paypalDirect2FeeInIDR; // Hasil dalam IDR
             let paypalDirect2ReceivedInUSD = paypalDirect2ReceivedInIDR / exchangeRate; // Konversi hasil dari IDR ke USD
             
-            let paypalDirect2Formula = `(${amount} * ${paypalExchangeRate}) - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
+            let paypalDirect2Formula = `(${amount} * ${exchangeRate}) - (${amount} * (${exchangeRate} * 0.0336) + ${feeIDR})`;
 
 
             
