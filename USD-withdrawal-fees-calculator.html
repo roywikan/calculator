@@ -63,6 +63,13 @@
                 <td id="payoneerIDR"></td>
                 <td id="payoneerFormula"></td>
             </tr>
+            <tr>
+                <td>Langsung dari PayPal dengan Prediksi Kurs</td>
+                <td id="paypalDirect2Fee"></td>
+                <td id="paypalDirect2Received"></td>
+                <td id="paypalDirect2IDR"></td>
+                <td id="paypalDirect2Formula"></td>
+            </tr>
         </tbody>
     </table>
 
@@ -75,6 +82,7 @@
             <li><strong>Hyperwallet → PayPal:</strong> Biaya 3.9% + $0.30. Dana langsung masuk ke akun PayPal.</li>
             <li><strong>Langsung dari PayPal:</strong> Biaya 3.9% + $0.30. Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
             <li><strong>Payoneer:</strong> Biaya $3 + 1% dari jumlah transfer. Dana sampai dalam 2-5 hari kerja.</li>
+            <li><strong>Langsung dari PayPal dengan Prediksi Kurs:</strong> Biaya Kurs 3.36% + Rp.16.000 (jika yang ditransfer kurang dari Rp. 1.500.000). Biasanya sampai dalam 1-3 hari kerja ke rekening bank.</li>
         </ul>
     </div>
     <script>
@@ -102,6 +110,12 @@
             let paypalDirectFee = (amount * 0.039) + 0.30;
             let paypalDirectReceived = amount - paypalDirectFee;
             let paypalDirectFormula = `${amount} * 0.039 + 0.30`;
+
+            // Direct PayPal transfer dengan Prediksi Kurs (3.36% , dan kena biaya Rp.16.000 jika kurang dari Rp.1.500.000)
+            let paypalDirect2Fee = (amount * 0.0336) + 16000;
+            let paypalDirect2Received = amount - paypalDirectFee;
+            let paypalDirect2Formula = `${amount} * 0.0339 + Rp. 16.000,-`;
+            
             
             // Payoneer ($3 fixed fee + 1%)
             let payoneerFee = 3 + (amount * 0.01);
@@ -128,6 +142,11 @@
             document.getElementById("paypalDirectReceived").textContent = paypalDirectReceived.toFixed(2);
             document.getElementById("paypalDirectIDR").textContent = (paypalDirectReceived * exchangeRate).toLocaleString();
             document.getElementById("paypalDirectFormula").textContent = paypalDirectFormula;
+
+            document.getElementById("paypalDirect2Fee").textContent = paypalDirect2Fee.toFixed(2);
+            document.getElementById("paypalDirect2Received").textContent = paypalDirect2Received.toFixed(2);
+            document.getElementById("paypalDirect2IDR").textContent = (paypalDirect2Received * exchangeRate).toLocaleString();
+            document.getElementById("paypalDirect2Formula").textContent = paypalDirect2Formula;
             
             document.getElementById("payoneerFee").textContent = payoneerFee.toFixed(2);
             document.getElementById("payoneerReceived").textContent = payoneerReceived.toFixed(2);
