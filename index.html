@@ -8,9 +8,14 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- Header & Navigasi -->
+<style>  
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1rem* var(--tw-space-x-reverse));
+    margin-left: calc(1.5rem* calc(1 - var(--tw-space-x-reverse)));
+}
+</style>
   
-
-
     <header class="bg-gray-800 text-white py-4">
         <div class="container mx-auto flex justify-between items-center px-4">
             <h1 class="text-xl font-bold">Free Calculator</h1>
