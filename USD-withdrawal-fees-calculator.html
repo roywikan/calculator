@@ -38,6 +38,7 @@
 
   
   <script src="https://cdn.tailwindcss.com"></script>
+  
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- Header & Navigasi -->
@@ -269,13 +270,16 @@
         // Hitung pertama kali saat halaman dimuat
         calculate();
     </script>
-  <script>
-    document.getElementById('menu-btn').addEventListener('click', function() {
-        document.getElementById('menu').classList.toggle('hidden');
-    });
-</script>
+
 
   <script>
+    document.getElementById("menu-btn").addEventListener("click", function() {
+    let menu = document.getElementById("menu");
+    menu.classList.toggle("hidden");
+    menu.classList.toggle("flex");
+    menu.classList.toggle("flex-col");
+});
+
 </script>
 
   
