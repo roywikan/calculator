@@ -4,26 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Investasi Emas vs USD</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        label, select, input { display: block; margin-top: 10px; }
-        button { margin-top: 15px; padding: 10px; cursor: pointer; }
-        .result { margin-top: 20px; font-weight: bold; }
-    </style>
+    <meta name="description" content="Kalkulator investasi emas vs USD untuk membantu Anda memilih strategi terbaik dalam menukar mata uang dan investasi emas." />
+    <meta name="keywords" content="investasi, emas, USD, kalkulator investasi" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Kalkulator Investasi Emas vs USD" />
+    <meta property="og:description" content="Bandingkan keuntungan investasi emas dan USD dengan kalkulator interaktif ini." />
+    <link rel="canonical" href="https://yourwebsite.com/kalkulator-investasi" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>Kalkulator Investasi Emas vs USD</h2>
-    <label>Saldo USD di PayPal:</label>
-    <input type="number" id="usdBalance" value="1000">
+<body class="bg-gray-100">
+    <header class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-xl font-bold">Kalkulator Investasi</h1>
+            <button id="menu-btn" class="md:hidden text-white">☰</button>
+            <nav id="menu" class="hidden md:flex space-x-4">
+                <a href="#hero" class="hover:underline">Beranda</a>
+                <a href="#result" class="hover:underline">Hasil</a>
+            </nav>
+        </div>
+    </header>
     
-    <label>Harga emas per gram (Rp):</label>
-    <input type="number" id="goldPriceNow" value="1773000">
-    
-    <label>Kurs USD/IDR sekarang:</label>
-    <input type="number" id="usdToIdrNow" value="16575">
-    
-    <label>Bulan Prediksi:</label>
-<select id="predictedMonth">
+    <section id="hero" class="py-10 text-center bg-white shadow-md">
+        <div class="container mx-auto px-4 max-w-lg">
+            <h2 class="text-2xl font-bold">Hitung Keuntungan Investasi Anda</h2>
+            <p class="text-gray-600">Masukkan data dan pilih strategi terbaik</p>
+            <div class="mt-5 text-left">
+                <label class="block">Saldo USD di PayPal:</label>
+                <input type="number" id="usdBalance" class="w-full border p-2" value="1000">
+                
+                <label class="block mt-3">Harga emas per gram (Rp):</label>
+                <input type="number" id="goldPriceNow" class="w-full border p-2" value="1773000">
+                
+                <label class="block mt-3">Kurs USD/IDR sekarang:</label>
+                <input type="number" id="usdToIdrNow" class="w-full border p-2" value="16575">
+                
+                <label class="block mt-3">Bulan Prediksi:</label>
+                <select id="predictedMonth" class="w-full border p-2">
+                <select id="predictedMonth" class="w-full border p-2">
     <option value="Januari">Januari</option>
     <option value="Februari">Februari</option>
     <option value="Maret">Maret</option>
@@ -38,17 +55,24 @@
     <option value="Desember">Desember</option>
 </select>
 
-    
-    <label>Harga emas prediksi per gram (Rp):</label>
-    <input type="number" id="goldPriceFuture" value="2000000">
-    
-    <label>Kurs USD/IDR prediksi:</label>
-    <input type="number" id="usdToIdrFuture" value="18000">
-    
-    <button onclick="calculate()">Hitung Keuntungan</button>
-    
-    <div class="result" id="result"></div>
+                <label class="block mt-3">Harga emas prediksi per gram (Rp):</label>
+                <input type="number" id="goldPriceFuture" class="w-full border p-2" value="2000000">
+                
+                <label class="block mt-3">Kurs USD/IDR prediksi:</label>
+                <input type="number" id="usdToIdrFuture" class="w-full border p-2" value="18000">
+                
+                <button onclick="calculate()" class="mt-5 w-full bg-blue-500 text-white py-2">Hitung Keuntungan</button>
+            </div>
+        </div>
+    </section>
 
+    <section id="result" class="container mx-auto mt-10 px-4">
+        <h2 class="text-xl font-bold text-center">Hasil Variasi Perhitungan</h2>
+        <div class="bg-white p-5 mt-5 shadow-md">
+            <div id="result-output" class="text-gray-700"></div>
+        </div>
+    </section>
+    
     <script>
         function calculate() {
             let usdBalance = parseFloat(document.getElementById('usdBalance').value);
@@ -68,12 +92,17 @@
 
             let goldGramFuture = idrFuture / goldPriceFuture;
 
-            document.getElementById('result').innerHTML = `
-                <p><strong>Skenario 1:</strong> Tukarkan ke IDR sekarang (mendapatkan Rp ${idrNow.toLocaleString()}) & belikan emas langsung → Nilai emasnya di ${month} jadi: <strong>Rp ${goldValueFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitGold.toLocaleString()})</p>
-                <p><strong>Skenario 2:</strong> Simpan dalam USD & tukarkan ke dalam Rupiah di bulan ${month} → Nilai: <strong>Rp ${idrFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitUsd.toLocaleString()})</p>
-                <p><strong>Skenario 3:</strong> Simpan dalam USD, nanti tukarkan ke dalam Rupiah di bulan ${month} & belikan emas di bulan ${month} → Anda mendapatkan <strong>${goldGramFuture.toFixed(2)} gram emas</strong> atau senilai Rp ${idrFuture.toLocaleString()}</p>
+            document.getElementById('result-output').innerHTML = `
+                <p><strong>Skenario 1:</strong> Tukarkan ke IDR sekarang (Rp ${idrNow.toLocaleString()}) & belikan emas → Nilai emas di ${month}: <strong>Rp ${goldValueFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitGold.toLocaleString()})</p>
+                <p><strong>Skenario 2:</strong> Simpan dalam USD & tukarkan ke IDR di ${month} → Nilai: <strong>Rp ${idrFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitUsd.toLocaleString()})</p>
+                <p><strong>Skenario 3:</strong> Simpan dalam USD, tukarkan ke IDR & beli emas di ${month} → Anda mendapat <strong>${goldGramFuture.toFixed(2)} gram emas</strong> senilai Rp ${idrFuture.toLocaleString()}</p>
             `;
         }
+        
+        document.getElementById("menu-btn").addEventListener("click", function() {
+            let menu = document.getElementById("menu");
+            menu.classList.toggle("hidden");
+        });
     </script>
 </body>
 </html>
