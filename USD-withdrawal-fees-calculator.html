@@ -159,10 +159,13 @@
   </section>
   
     <script>
-        function 1toggleMenu() {
-            const menu = document.querySelector('.menu');
-            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-        }
+
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('hidden');
+    menu.classList.toggle('flex');
+    menu.classList.toggle('flex-col'); // Tambahkan ini agar menu tampil vertikal di mobile
+  }
         
         function calculate() {
             let amount = parseFloat(document.getElementById("amount").value) || 100;
@@ -273,12 +276,6 @@
 </script>
 
   <script>
-  function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('flex');
-    menu.classList.toggle('flex-col'); // Tambahkan ini agar menu tampil vertikal di mobile
-  }
 </script>
 
   
