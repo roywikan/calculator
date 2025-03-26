@@ -59,9 +59,9 @@
             let goldGramFuture = idrFuture / goldPriceFuture;
 
             document.getElementById('result').innerHTML = `
-                <p>Skenario 1: Tukar USD sekarang & beli emas → Nilai di ${month}: <strong>Rp ${goldValueFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitGold.toLocaleString()})</p>
-                <p>Skenario 2: Simpan USD & tukar di ${month} → Nilai: <strong>Rp ${idrFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitUsd.toLocaleString()})</p>
-                <p>Skenario 3: Simpan USD, tukar di ${month} & beli emas → Anda mendapatkan <strong>${goldGramFuture.toFixed(2)} gram emas</strong></p>
+                <p><strong>Skenario 1:</strong> Tukarkan ke IDR sekarang (mendapatkan Rp ${idrNow.toLocaleString()}) & belikan emas langsung → Nilai emasnya di ${month} jadi: <strong>Rp ${goldValueFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitGold.toLocaleString()})</p>
+                <p><strong>Skenario 2:</strong> Simpan dalam USD & tukarkan ke dalam Rupiah di bulan ${month} → Nilai: <strong>Rp ${idrFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitUsd.toLocaleString()})</p>
+                <p><strong>Skenario 3:</strong> Simpan dalam USD, nanti tukarkan ke dalam Rupiah di bulan ${month} & belikan emas di bulan ${month} → Anda mendapatkan <strong>${goldGramFuture.toFixed(2)} gram emas</strong> atau senilai Rp ${idrFuture.toLocaleString()}</p>
             `;
         }
     </script>
