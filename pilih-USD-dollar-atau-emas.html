@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Investasi Emas vs USD</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label, select, input { display: block; margin-top: 10px; }
+        button { margin-top: 15px; padding: 10px; cursor: pointer; }
+        .result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Kalkulator Investasi Emas vs USD</h2>
+    <label>Saldo USD di PayPal:</label>
+    <input type="number" id="usdBalance" value="1000">
+    
+    <label>Harga emas per gram (Rp):</label>
+    <input type="number" id="goldPriceNow" value="1773000">
+    
+    <label>Kurs USD/IDR sekarang:</label>
+    <input type="number" id="usdToIdrNow" value="16575">
+    
+    <label>Bulan Prediksi:</label>
+    <select id="predictedMonth">
+        <option value="Juni">Juni</option>
+        <option value="Juli">Juli</option>
+        <option value="Agustus">Agustus</option>
+    </select>
+    
+    <label>Harga emas prediksi per gram (Rp):</label>
+    <input type="number" id="goldPriceFuture" value="2000000">
+    
+    <label>Kurs USD/IDR prediksi:</label>
+    <input type="number" id="usdToIdrFuture" value="18000">
+    
+    <button onclick="calculate()">Hitung Keuntungan</button>
+    
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculate() {
+            let usdBalance = parseFloat(document.getElementById('usdBalance').value);
+            let goldPriceNow = parseFloat(document.getElementById('goldPriceNow').value);
+            let usdToIdrNow = parseFloat(document.getElementById('usdToIdrNow').value);
+            let goldPriceFuture = parseFloat(document.getElementById('goldPriceFuture').value);
+            let usdToIdrFuture = parseFloat(document.getElementById('usdToIdrFuture').value);
+            let month = document.getElementById('predictedMonth').value;
+
+            let idrNow = usdBalance * usdToIdrNow;
+            let goldGramNow = idrNow / goldPriceNow;
+            let goldValueFuture = goldGramNow * goldPriceFuture;
+            let profitGold = goldValueFuture - idrNow;
+
+            let idrFuture = usdBalance * usdToIdrFuture;
+            let profitUsd = idrFuture - idrNow;
+
+            let goldGramFuture = idrFuture / goldPriceFuture;
+
+            document.getElementById('result').innerHTML = `
+                <p>Skenario 1: Tukar USD sekarang & beli emas → Nilai di ${month}: <strong>Rp ${goldValueFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitGold.toLocaleString()})</p>
+                <p>Skenario 2: Simpan USD & tukar di ${month} → Nilai: <strong>Rp ${idrFuture.toLocaleString()}</strong> (Keuntungan: Rp ${profitUsd.toLocaleString()})</p>
+                <p>Skenario 3: Simpan USD, tukar di ${month} & beli emas → Anda mendapatkan <strong>${goldGramFuture.toFixed(2)} gram emas</strong></p>
+            `;
+        }
+    </script>
+</body>
+</html>
