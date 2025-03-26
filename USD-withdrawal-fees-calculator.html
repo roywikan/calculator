@@ -45,22 +45,17 @@
 
 
 
-    <header class="sticky top-0 flex bg-gray-800 text-white py-4">
-        
-        <div id="hamburger" class="container mx-auto flex justify-between items-center px-4" onclick="toggleMenu()">
-            <button id="menu-btn" class="md:hidden text-white">☰</button>
-            <nav id="menu" class="hidden md:flex space-x-4">
-                <!-- a href="#hero" class="hover:underline">Beranda</a -->
-                <!-- a href="#result" class="hover:underline">Hasil</a -->
-
-        <a href="/" class="block px-4 py-2 hover:bg-gray-700">Home</a>
+<header class="sticky top-0 flex bg-gray-800 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center px-4">
+        <button id="menu-btn" class="md:hidden text-white">☰</button>
+        <nav id="menu" class="hidden md:flex space-x-4">
+            <a href="/" class="block px-4 py-2 hover:bg-gray-700">Home</a>
             <a href="/USD-withdrawal-fees-calculator.html" class="hover:underline">USD To IDR Withdrawal</a>
             <a href="/pilih-USD-dollar-atau-emas.html" class="hover:underline">Invest USD atau Emas?</a>
+        </nav>
+    </div>
+</header>
 
-                
-            </nav>
-        </div>
-    </header>
 
 
   
@@ -270,5 +265,11 @@
         // Hitung pertama kali saat halaman dimuat
         calculate();
     </script>
+  <script>
+    document.getElementById('menu-btn').addEventListener('click', function() {
+        document.getElementById('menu').classList.toggle('hidden');
+    });
+</script>
+
 </body>
 </html>
